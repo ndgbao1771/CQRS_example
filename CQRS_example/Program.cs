@@ -1,5 +1,7 @@
-using CQRS_example;
+﻿using CQRS_example;
 using CQRS_example.DataAccess;
+using CQRS_example.DataAccess.Interfaces;
+using CQRS_example.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -17,11 +19,18 @@ builder.Services.AddMediatR(configuration =>
 });
 
 builder.Services.AddDbContext<Ex_DbContext>(options =>
-    options.UseInMemoryDatabase("Data_Initializer"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IDataAccess, DataAccess>();
+
+builder.Services.AddCustomServices();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<Ex_DbContext>();
+    DataSeeder.Seed(dbContext);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,5 +1,6 @@
 ﻿using CQRS_example.Commands;
-using CQRS_example.Queries;
+using CQRS_example.Models;
+using CQRS_example.Queries.Students;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,8 +29,8 @@ namespace CQRS_example.Controllers
         public async Task<IActionResult> GetStudentById(int id)
         {
             var query = new GetStudentByIdQuery(id);
-            var students = await _mediator.Send(query);
-            return Ok(students);
+            var student = await _mediator.Send(query);
+            return student != null ? Ok(student) : NotFound();
         }
 
         [HttpPost]
@@ -41,7 +42,51 @@ namespace CQRS_example.Controllers
             }
 
             var student = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetStudents), new { id = student.Id }, student);
+            return CreatedAtAction(nameof(GetStudentById), new { id = student.Id }, student);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] Student student)
+        {
+            if (student == null || student.Id != id)
+            {
+                return BadRequest("Invalid student data.");
+            }
+
+            var updatedStudent = await _mediator.Send(new UpdateStudentCommand(id, student));
+            return updatedStudent != null ? Ok(updatedStudent) : NotFound();
+        }
+
+        //[HttpPatch("{id}")]
+        //public async Task<IActionResult> PatchStudent(int id, [FromBody] JsonPatchDocument<Student> patchDoc)
+        //{
+        //    if (patchDoc == null)
+        //    {
+        //        return BadRequest("Invalid patch document.");
+        //    }
+
+        //    var student = await _mediator.Send(new GetStudentByIdQuery(id));
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    patchDoc.ApplyTo(student);
+        //    var updatedStudent = await _mediator.Send(new UpdateStudentCommand(id, student));
+        //    return Ok(updatedStudent);
+        //}
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            var student = await _mediator.Send(new GetStudentByIdQuery(id));
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            await _mediator.Send(new DeleteStudentCommand(id));
+            return NoContent();
         }
     }
 }

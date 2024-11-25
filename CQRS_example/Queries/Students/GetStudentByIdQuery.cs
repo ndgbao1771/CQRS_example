@@ -1,7 +1,7 @@
 ﻿using CQRS_example.Models;
 using MediatR;
 
-namespace CQRS_example.Queries
+namespace CQRS_example.Queries.Students
 {
     public class GetStudentByIdQuery : IRequest<Student>
     {

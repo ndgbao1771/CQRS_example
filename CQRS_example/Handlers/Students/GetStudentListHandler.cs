@@ -1,14 +1,14 @@
-﻿using CQRS_example.DataAccess;
+﻿using CQRS_example.DataAccess.Interfaces;
 using CQRS_example.Models;
-using CQRS_example.Queries;
+using CQRS_example.Queries.Students;
 using MediatR;
 
-namespace CQRS_example.Handlers
+namespace CQRS_example.Handlers.Students
 {
     public class GetStudentListHandler : IRequestHandler<GetStudentListQuery, List<Student>>
     {
-        private readonly IDataAccess _data;
-        public GetStudentListHandler(IDataAccess data)
+        private readonly IStudentDataAccess _data;
+        public GetStudentListHandler(IStudentDataAccess data)
         {
             _data = data;
         }
