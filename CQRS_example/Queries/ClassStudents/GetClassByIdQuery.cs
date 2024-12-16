@@ -1,12 +1,12 @@
 ﻿using CQRS_example.Models;
 using MediatR;
 
-namespace CQRS_example.Queries
+namespace CQRS_example.Queries.ClassStudents
 {
-    public class GetStudentByIdQuery : IRequest<Student>
+    public class GetClassByIdQuery : IRequest<Class>
     {
         public int Id { get; set; }
-        public GetStudentByIdQuery(int id)
+        public GetClassByIdQuery(int id)
         {
             Id = id;
         }
