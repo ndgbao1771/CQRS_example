@@ -8,6 +8,7 @@ namespace CQRS_example.Extensions
         public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddScoped<IStudentDataAccess, StudentDataAccesss>();
+            services.AddScoped<IClassDataAccess, ClassDataAccess>();
         }
     }
 }

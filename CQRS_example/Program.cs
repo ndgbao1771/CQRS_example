@@ -26,12 +26,6 @@ builder.Services.AddCustomServices();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<Ex_DbContext>();
-    DataSeeder.Seed(dbContext);
-}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

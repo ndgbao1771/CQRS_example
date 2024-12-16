@@ -23,12 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\ClassStudents\" />
     <Folder Include="Handlers\CourseStudents\" />
     <Folder Include="Handlers\Teachers\" />
-    <Folder Include="Queries\ClassStudents\" />
     <Folder Include="Queries\CourseStudents\" />
-    <Folder Include="Queries\Teachers\" />
   </ItemGroup>
 
 </Project>
